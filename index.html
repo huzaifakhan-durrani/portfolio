@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huzaifa Khan — your product partner. evolved.</title>
+<meta name="description" content="Web design &amp; software development. A five-phase method that transforms how your business runs on technology.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ══════════ SVG FILTER DEFS ══════════
+     Ragged "torn ink" edge: fractal noise violently displaces the edge of a
+     solid sheet, a small blur softens it, then a DISCRETE alpha ramp snaps
+     everything either fully on or fully off — that hard threshold is what
+     turns a fuzzy gradient into a crisp blotted edge with detached islands. -->
+<svg class="defs" aria-hidden="true" focusable="false">
+  <filter id="ink-edge" x="-12%" y="-12%" width="124%" height="124%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.015 0.02" numOctaves="3" seed="7" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="220" xChannelSelector="R" yChannelSelector="G" result="displaced"/>
+    <feGaussianBlur in="displaced" stdDeviation="1.8" result="presmooth"/>
+    <feComponentTransfer in="presmooth" result="cut">
+      <feFuncA type="discrete" tableValues="0 0 0 0 0 1 1 1 1 1"/>
+    </feComponentTransfer>
+    <feGaussianBlur in="cut" stdDeviation="0.4"/>
+  </filter>
+</svg>
+
+<!-- ══════════ INTRO / PRELOADER ══════════ -->
+<div class="intro" id="intro">
+  <div class="intro__grid"></div>
+  <div class="intro__inner">
+    <div class="intro__row">
+      <span class="intro__label" data-scramble>initialising</span>
+      <span class="intro__count" id="introCount">000</span>
+    </div>
+    <div class="intro__bar"><i id="introBar"></i></div>
+    <div class="intro__name"><span>Huzaifa</span><span>Khan</span></div>
+  </div>
+  <div class="intro__curtain"></div>
+</div>
+
+<!-- ══════════ CLICK RIPPLES ══════════ -->
+<canvas class="ripples" id="ripples" aria-hidden="true"></canvas>
+
+<!-- ══════════ CURSOR ══════════ -->
+<div class="cursor" id="cursor"><span class="cursor__dot"></span><span class="cursor__ring"></span><span class="cursor__label"></span></div>
+
+<!-- ══════════ NAV ══════════ -->
+<header class="nav" id="nav">
+  <div class="nav__pill" id="navPill">
+    <a class="brand" href="#top" data-cursor="home">
+      <span class="brand__word">Huzaifa<b>Khan</b></span>
+      <span class="brand__dots"><i></i><i></i><i></i><i></i><i></i></span>
+    </a>
+
+    <nav class="nav__links">
+      <div class="nav__item" data-menu="services">
+        <button class="nav__link" data-scramble>services <em>▾</em></button>
+      </div>
+      <a class="nav__link" href="#method" data-scramble>method</a>
+      <div class="nav__item" data-menu="work">
+        <button class="nav__link" data-scramble>case studies <em>▾</em></button>
+      </div>
+      <div class="nav__item" data-menu="more">
+        <button class="nav__link" data-scramble>more <em>▾</em></button>
+      </div>
+      <a class="nav__link" href="#contact" data-scramble>contact</a>
+    </nav>
+
+    <div class="nav__right">
+      <button class="nav__icon" id="searchBtn" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      </button>
+      <a class="nav__cta" href="#contact" data-magnetic data-cursor="talk">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15L2 22l5.2-1.4A10 10 0 1012 2zm5.6 14.2c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .1-1.6-.1a13 13 0 01-6.5-5.7c-.5-.8-.8-1.7-.8-2.5 0-.9.5-1.4.7-1.6.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 1.9c.1.2 0 .4-.1.5l-.4.5c-.1.2-.3.3-.1.6a9.6 9.6 0 003.9 3.3c.3.1.4.1.6-.1l.8-.9c.2-.2.3-.2.6-.1l1.8.9c.2.1.4.2.4.3s0 .9-.2 1.1z"/></svg>
+        <span data-scramble>message me</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- MEGA MENUS -->
+  <div class="mega" data-panel="services">
+    <div class="mega__inner">
+      <div class="mega__head"><span>services</span><a href="#">all services →</a></div>
+      <div class="mega__cols">
+        <div class="mega__col">
+          <h4>software &amp; product</h4>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="1"></span><b>Web Development</b><i>Sites built to be read by people and machines.</i><u>popular</u></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="2"></span><b>Custom Software</b><i>Bespoke systems for awkward workflows.</i></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="3"></span><b>Mobile Apps</b><i>Cross-platform, one codebase.</i></a>
+        </div>
+        <div class="mega__col">
+          <h4>cloud, data &amp; ai</h4>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="4"></span><b>AI Agent Development</b><i>Production-grade agents, not demos.</i><u>popular</u></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="5"></span><b>Cloud Migration</b><i>Move to AWS, Azure, Vercel.</i></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="6"></span><b>Data &amp; Analytics</b><i>Turn scattered logs into decisions.</i></a>
+        </div>
+        <div class="mega__col">
+          <h4>business systems</h4>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="7"></span><b>Digital Transformation</b><i>Rewire how your business runs.</i></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="8"></span><b>ERP Implementation</b><i>ERP that ships this quarter.</i></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="9"></span><b>CRM Implementation</b><i>Salesforce, HubSpot &amp; friends.</i></a>
+        </div>
+        <div class="mega__col">
+          <h4>growth (ai-era)</h4>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="10"></span><b>SEO</b><i>Ranked on Google.</i><u>popular</u></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="11"></span><b>GEO / AEO</b><i>Get cited by ChatGPT.</i></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="12"></span><b>Paid Media</b><i>ROI-focused spend.</i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mega mega--sm" data-panel="work">
+    <div class="mega__inner">
+      <div class="mega__head"><span>case studies</span><a href="#work">all work →</a></div>
+      <div class="mega__cols mega__cols--3">
+        <div class="mega__col">
+          <h4>commerce</h4>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="13"></span><b>Meridian Retail</b><i>+218% organic revenue in 9 months.</i></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="14"></span><b>Northbound</b><i>Headless replatform, 0.9s LCP.</i></a>
+        </div>
+        <div class="mega__col">
+          <h4>platforms</h4>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="15"></span><b>Atlas Logistics</b><i>Fleet telemetry, 40k events/min.</i></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="16"></span><b>Fieldnote</b><i>Offline-first field ops app.</i></a>
+        </div>
+        <div class="mega__col">
+          <h4>ai</h4>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="17"></span><b>Sable Health</b><i>Triage agent, 71% deflection.</i></a>
+          <a class="mcard" href="#"><span class="mcard__art" data-art="18"></span><b>Verso</b><i>RAG over 2M legal docs.</i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mega mega--sm" data-panel="more">
+    <div class="mega__inner">
+      <div class="mega__head"><span>more</span><a href="#contact">get in touch →</a></div>
+      <div class="mega__cols mega__cols--3">
+        <div class="mega__col">
+          <h4>studio</h4>
+          <a class="mlink" href="#">About</a><a class="mlink" href="#">Method</a><a class="mlink" href="#">Process</a><a class="mlink" href="#">Pricing</a>
+        </div>
+        <div class="mega__col">
+          <h4>resources</h4>
+          <a class="mlink" href="#">Blog</a><a class="mlink" href="#">Free SEO check</a><a class="mlink" href="#">AI visibility check</a><a class="mlink" href="#">llms.txt</a>
+        </div>
+        <div class="mega__col">
+          <h4>connect</h4>
+          <a class="mlink" href="#">LinkedIn</a><a class="mlink" href="#">GitHub</a><a class="mlink" href="#">Behance</a><a class="mlink" href="#">Instagram</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════ SEARCH OVERLAY ══════════ -->
+<div class="search" id="search">
+  <div class="search__box">
+    <div class="search__field"><span>/</span><input type="text" placeholder="search the studio…" id="searchInput" autocomplete="off"></div>
+    <div class="search__hint">esc to close</div>
+    <div class="search__results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- ══════════ SCROLL RAIL ══════════ -->
+<aside class="rail" id="rail">
+  <div class="rail__track"><i id="railFill"></i></div>
+  <span class="rail__pct" id="railPct">000%</span>
+</aside>
+
+<!-- ══════════ LANG ══════════ -->
+<button class="lang" id="lang" data-cursor="switch">
+  <span class="lang__flag">PK</span>
+  <span class="lang__text"><i></i>اردو میں؟</span>
+</button>
+
+<main id="top">
+
+<!-- ══════════ DARK CHAPTER ══════════ -->
+<div class="chapter chapter--dark">
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="hero">
+  <div class="hero__sticky">
+    <canvas class="hero__globe" id="globe"></canvas>
+    <div class="hero__vignette"></div>
+    <div class="hero__status"><i></i>ONLINE · LAHORE</div>
+    <div class="hero__content">
+      <h1 class="hero__title">
+        <span class="line"><span class="w" data-split>Your</span> <span class="w" data-split>product</span> <span class="w" data-split>partner.</span></span>
+        <span class="line"><span class="w" data-split>Evolved.</span></span>
+      </h1>
+      <p class="hero__sub" data-reveal>A five-phase method that transforms how your business runs on technology. An AI-first studio — and your end-to-end product partner.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#contact" data-magnetic><span data-scramble>start a project</span> <em>→</em></a>
+        <a class="btn btn--ghost" href="#work" data-magnetic><span data-scramble>see the work</span></a>
+      </div>
+    </div>
+    <div class="hero__cue"><span>scroll</span><i></i></div>
+  </div>
+</section>
+
+<!-- ══════════ MARQUEE ══════════ -->
+<section class="strip">
+  <div class="marquee"><div class="marquee__row" id="mq1"></div></div>
+</section>
+
+<!-- ══════════ STATS ══════════ -->
+<section class="stats">
+  <div class="stats__pill" data-reveal>
+    <span><b data-count="4">0</b>+ YEARS</span><i>·</i>
+    <span><b data-count="120">0</b>+ PROJECTS</span><i>·</i>
+    <span><b data-count="14">0</b> COUNTRIES</span><i>·</i>
+    <span class="stars">★ <b data-count="5" data-dec="1">0</b> <u>Google</u></span>
+  </div>
+</section>
+
+<!-- ══════════ REVIEWS ══════════ -->
+<section class="reviews">
+  <div class="reviews__track" id="reviewTrack"></div>
+</section>
+
+  <!-- torn edge: the white chapter bleeds up over the bottom of this one -->
+  <div class="ink" aria-hidden="true"><span class="ink__fx"><i class="ink__sheet"></i></span></div>
+</div><!-- /.chapter--dark -->
+
+<!-- ══════════ LIGHT CHAPTER ══════════ -->
+<div class="chapter chapter--light">
+
+<!-- ══════════ METHOD (pinned horizontal) ══════════ -->
+<section class="method" id="method">
+  <div class="method__intro">
+    <span class="eyebrow" data-scramble>[ the framework ]</span>
+    <h2 class="method__h" data-reveal>The 5<span class="d">D</span> method.</h2>
+    <p class="method__p" data-reveal>Technology accelerates faster every day. Most businesses fall behind. I close that gap — a five-phase method that doesn't follow the curve, it bends it. No limits. No legacy. No excuses.</p>
+  </div>
+
+  <div class="method__pin" id="methodPin">
+    <div class="method__viewport">
+      <div class="method__rail" id="methodRail">
+        <article class="phase" data-i="01">
+          <span class="phase__ghost">01</span>
+          <h3 class="phase__t">Discover<span>.</span></h3>
+          <p class="phase__lead">80% of tech projects fail because no one asked the right question.</p>
+          <ul class="phase__list">
+            <li>we don't start at the solution, we start at the uncomfortable truth</li>
+            <li>how your business actually runs — not the org-chart version</li>
+            <li>clarity before code</li>
+          </ul>
+        </article>
+        <article class="phase" data-i="02">
+          <span class="phase__ghost">02</span>
+          <h3 class="phase__t">Diagnose<span>.</span></h3>
+          <p class="phase__lead">If it can't be measured, it doesn't exist.</p>
+          <ul class="phase__list">
+            <li>every friction, bottleneck and silent leak — mapped</li>
+            <li>the operative diagnosis few consultants will sign their name to</li>
+            <li>measured truth, zero opinions</li>
+          </ul>
+        </article>
+        <article class="phase" data-i="03">
+          <span class="phase__ghost">03</span>
+          <h3 class="phase__t">Design<span>.</span></h3>
+          <p class="phase__lead">I don't prescribe software. I prescribe outcomes.</p>
+          <ul class="phase__list">
+            <li>every architectural decision tied to a business KPI</li>
+            <li>if it doesn't move the needle, it doesn't make the plan</li>
+            <li>blueprint, not buzzwords</li>
+          </ul>
+        </article>
+        <article class="phase" data-i="04">
+          <span class="phase__ghost">04</span>
+          <h3 class="phase__t">Deliver<span>.</span></h3>
+          <p class="phase__lead">Code without adoption is debt with ego.</p>
+          <ul class="phase__list">
+            <li>victory isn't deploy, it's your team running it without me</li>
+            <li>understood without a manual, improved without permission</li>
+            <li>adoption, not delivery</li>
+          </ul>
+        </article>
+        <article class="phase" data-i="05">
+          <span class="phase__ghost">05</span>
+          <h3 class="phase__t">Evolve<span class="pink">.</span></h3>
+          <p class="phase__lead">What doesn't evolve is already dying.</p>
+          <ul class="phase__list">
+            <li>while most invoice and disappear, I stay</li>
+            <li>your business changes every quarter — your tech has to match</li>
+            <li>partnership, not project</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+
+    <div class="tracker" id="tracker">
+      <div class="tracker__row">
+        <span class="tracker__node"><b>D</b><s></s></span>
+        <span class="tracker__node"><b>D</b><s></s></span>
+        <span class="tracker__node"><b>D</b><s></s></span>
+        <span class="tracker__node"><b>D</b><s></s></span>
+        <span class="tracker__node"><b>E</b><s></s></span>
+      </div>
+      <div class="tracker__labels">
+        <em>discover</em><em>diagnose</em><em>design</em><em>deliver</em><em>evolve</em>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- torn edge back to dark — in flow, so it never covers the Evolve panel -->
+<div class="inkband ink--dark" aria-hidden="true"><span class="ink__fx"><i class="ink__sheet"></i></span></div>
+</div><!-- /.chapter--light -->
+
+<!-- ══════════ DARK CHAPTER (closing) ══════════ -->
+<div class="chapter chapter--dark">
+
+<!-- ══════════ FRICTION ══════════ -->
+<section class="friction" id="friction">
+  <div class="friction__inner">
+    <span class="eyebrow" data-scramble>[ 何が 邪魔をする ]</span>
+    <h2 class="friction__h">
+      <span class="w" data-split>What's</span>
+      <span class="w" data-split>slowing</span>
+      <span class="w" data-split>you</span>
+      <span class="w" data-split>down?</span>
+    </h2>
+    <p class="friction__p" data-reveal>You name the friction. I map the fix.</p>
+    <a class="btn btn--primary btn--lg" href="#contact" data-magnetic><span data-scramble>see what happens next</span> <em>→</em></a>
+  </div>
+  <div class="arc" id="arc"></div>
+</section>
+
+<!-- ══════════ WORK ══════════ -->
+<section class="work" id="work">
+  <div class="work__head">
+    <span class="eyebrow" data-scramble>[ selected work ]</span>
+    <h2 data-reveal>Real projects,<br>real outcomes.</h2>
+  </div>
+  <div class="work__grid" id="workGrid"></div>
+</section>
+
+<!-- ══════════ DESERVE ══════════ -->
+<section class="deserve">
+  <h2 class="deserve__h">
+    <span class="w" data-split>And</span> <span class="w" data-split>every</span> <span class="w" data-split>business</span>
+    <span class="w" data-split>deserves</span> <span class="w" data-split>to</span> <span class="w hl" data-split>evolve</span>
+  </h2>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section class="contact" id="contact">
+  <div class="contact__inner">
+    <span class="eyebrow" data-scramble>[ let's talk ]</span>
+    <h2 data-reveal>Tell me what's slowing your product down — I'll map the fix.</h2>
+    <a class="btn btn--primary btn--lg" href="mailto:hello@huzaifakhan.dev" data-magnetic><span data-scramble>get in touch</span> <em>→</em></a>
+  </div>
+</section>
+
+</div><!-- /.chapter--dark -->
+</main>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="foot">
+  <div class="foot__social" id="footSocial"></div>
+
+  <div class="foot__cols">
+    <div class="foot__col">
+      <h5>popular services</h5>
+      <a href="#">Web Development</a><a href="#">AI Agent Development</a><a href="#">SEO</a><a href="#">GEO / AEO</a><a href="#">Paid Media</a><a class="strong" href="#">All services →</a>
+    </div>
+    <div class="foot__col">
+      <h5>studio</h5>
+      <a href="#">About</a><a href="#method">Method</a><a href="#work">Case studies</a><a href="#">Blog</a><a href="#contact">Contact</a>
+    </div>
+    <div class="foot__col">
+      <h5>quick links</h5>
+      <a href="#">Reviews</a><a href="#">Free SEO check</a><a href="#">AI visibility check</a><a href="#">Sitemap</a><a href="#">llms.txt</a>
+    </div>
+    <div class="foot__col foot__col--meta">
+      <h5>built with</h5>
+      <div class="chips"><i>Next.js</i><i>GSAP</i><i>Three.js</i><i>Figma</i><i>Postgres</i><i>AWS</i></div>
+    </div>
+  </div>
+
+  <div class="foot__marq">
+    <div class="marquee"><div class="marquee__row" id="mq2"></div></div>
+    <div class="marquee marquee--rev"><div class="marquee__row" id="mq3"></div></div>
+  </div>
+
+  <div class="foot__base">
+    <span>© 2026 HUZAIFA KHAN — BUILT TO EVOLVE</span>
+    <span class="foot__legal"><a href="#">Privacy policy</a><a href="#">Terms</a><a href="#">Cookies</a></span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
