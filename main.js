@@ -306,7 +306,34 @@ function afterIntro() {
 }
 
 /* ============================================================
-   6 · MAGNETIC BUTTONS
+   6 · BUTTON HOVER ORIGIN + MAGNETIC BUTTONS
+   ============================================================ */
+/* Feed the circular fill the point where the pointer crossed the edge, so it
+   grows from that side — and re-feed it on the way out so it retracts toward
+   the exit. Seeded at the centre for keyboard focus and touch. */
+$$('.btn, .nav__cta').forEach(el => {
+  const seed = () => {
+    const r = el.getBoundingClientRect();
+    if (!r.width) return;
+    el.style.setProperty('--d', (2 * Math.hypot(r.width, r.height)).toFixed(0) + 'px');
+    if (!el.style.getPropertyValue('--mx')) {
+      el.style.setProperty('--mx', (r.width / 2).toFixed(0) + 'px');
+      el.style.setProperty('--my', (r.height / 2).toFixed(0) + 'px');
+    }
+  };
+  const track = e => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--d', (2 * Math.hypot(r.width, r.height)).toFixed(0) + 'px');
+    el.style.setProperty('--mx', (e.clientX - r.left).toFixed(0) + 'px');
+    el.style.setProperty('--my', (e.clientY - r.top).toFixed(0) + 'px');
+  };
+  seed();
+  el.addEventListener('pointerenter', track);
+  el.addEventListener('pointerleave', track);
+});
+
+/* ============================================================
+   6b · MAGNETIC
    ============================================================ */
 if (!isTouch) {
   // magnetic buttons
@@ -564,7 +591,7 @@ function buildGlobe() {
     camera.aspect = aspect;
     camera.position.z = visibleH / (2 * Math.tan(camera.fov * Math.PI / 360));
     camera.updateProjectionMatrix();
-    lift = visibleH * 0.12;                           // centre sits ~38% down
+    lift = visibleH * 0.08;                           // centre at 42vh: crown clears the nav
   }
   size(); window.addEventListener('resize', size);
 
