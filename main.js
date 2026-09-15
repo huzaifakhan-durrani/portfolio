@@ -7,6 +7,21 @@
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ── EDIT ME ────────────────────────────────────────────────
+   Everything the site needs to reach you. Leave a field empty
+   and its control quietly falls back to the contact page
+   instead of rendering a dead link.                          */
+const CONTACT = {
+  email:    'REPLACE_WITH_YOUR_EMAIL@example.com',
+  whatsapp: '',   // digits only, country code first, e.g. '923001234567'
+  github:   'https://github.com/huzaifakhan-durrani',
+  linkedin: 'https://www.linkedin.com/in/huzaifa-khan-durrani-%F0%9F%A5%88-9b3656285/'
+};
+const MAILTO = `mailto:${CONTACT.email}`;
+const WHATSAPP = CONTACT.whatsapp
+  ? `https://wa.me/${CONTACT.whatsapp}?text=${encodeURIComponent("Hi Huzaifa — I found you through your site.")}`
+  : 'contact.html';
+
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const isTouch = window.matchMedia('(hover:none)').matches;
 const $  = (s, c = document) => c.querySelector(s);
@@ -156,7 +171,9 @@ $$('[data-art]').forEach(el => {
    4 · CONTENT INJECTION
    ============================================================ */
 // -- marquee rows
-const TECH = ['NEXT.JS', 'REACT', 'TYPESCRIPT', 'NODE', 'POSTGRES', 'AWS', 'THREE.JS', 'GSAP', 'FIGMA', 'TAILWIND', 'PYTHON', 'DOCKER', 'SUPABASE', 'STRIPE'];
+const TECH = (window.ICONS ? window.ICONS.tech : []).map(
+  ([name, slug, color]) => `<span class="tech">${window.ICONS.svg(slug, color, 15)}${name.toUpperCase()}</span>`
+);
 const PHRASES = ['BUILT TO EVOLVE', 'CLARITY BEFORE CODE', 'MEASURED TRUTH', 'ADOPTION NOT DELIVERY', 'PARTNERSHIP NOT PROJECT', 'NO LEGACY · NO LIMITS', 'SHIP · MEASURE · BEND'];
 const JP = ['進化する', '明快さ', '真実', '導入', '提携', '限界なし', '出荷する'];
 
@@ -164,11 +181,18 @@ function fillMarquee(el, items, sep) {
   const make = () => items.map(t => `<span>${t}${sep ? `<i style="color:var(--pink);font-style:normal;margin-left:22px">${sep}</i>` : ''}</span>`).join('');
   el.innerHTML = make() + make() + make();
 }
-fillMarquee($('#mq1'), TECH, '✦');
-fillMarquee($('#mq2'), PHRASES.map((p, i) => `${p} <i style="opacity:.45">${JP[i]}</i>`), '·');
-fillMarquee($('#mq3'), [...PHRASES].reverse().map((p, i) => `${JP[i]} <i style="opacity:.45">${p}</i>`), '·');
+if ($('#mq1')) fillMarquee($('#mq1'), TECH, '✦');
+if ($('#mq2')) fillMarquee($('#mq2'), PHRASES.map((p, i) => `${p} <i style="opacity:.45">${JP[i]}</i>`), '·');
+if ($('#mq3')) fillMarquee($('#mq3'), [...PHRASES].reverse().map((p, i) => `${JP[i]} <i style="opacity:.45">${p}</i>`), '·');
 
 // -- reviews
+const GOOGLE_G = `<svg class="rev__g" viewBox="0 0 24 24" aria-hidden="true">
+  <path fill="#4285F4" d="M23.52 12.27c0-.79-.07-1.54-.2-2.27H12v4.51h6.47a5.54 5.54 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.87z"/>
+  <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.94-2.91l-3.88-3c-1.08.72-2.45 1.15-4.06 1.15-3.12 0-5.77-2.11-6.71-4.95H1.28v3.09A12 12 0 0 0 12 24z"/>
+  <path fill="#FBBC05" d="M5.29 14.29a7.2 7.2 0 0 1 0-4.58V6.62H1.28a12 12 0 0 0 0 10.76z"/>
+  <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.28 6.62l4.01 3.09C6.23 6.86 8.88 4.75 12 4.75z"/>
+</svg>`;
+
 const REVIEWS = [
   { t: 'Huzaifa rebuilt our storefront in six weeks and the numbers moved in the first month. He asks the questions our last agency never bothered with.', n: 'Paola Constantino', r: 'Ops Lead · Solmar Rentals', c: '#c2410c' },
   { t: 'He is on top of everything. Incredibly attentive and always reachable when I have questions. A genuinely hard worker who sticks around after launch.', n: 'Raquel Fisk', r: 'Founder · Northbound', c: '#1d4ed8' },
@@ -177,9 +201,9 @@ const REVIEWS = [
   { t: 'The AI agent handles 70% of our intake. What impressed me was that he talked us out of the expensive version first.', n: 'Tomás Rivera', r: 'GM · Sable Health', c: '#be123c' },
   { t: 'Fast, precise, and refreshingly honest about trade-offs. Our load times went from four seconds to under one.', n: 'Ayesha Noor', r: 'Head of Digital · Meridian', c: '#0369a1' }
 ];
-$('#reviewTrack').innerHTML = [...REVIEWS, ...REVIEWS].map(r => `
+if ($('#reviewTrack')) $('#reviewTrack').innerHTML = [...REVIEWS, ...REVIEWS].map(r => `
   <article class="rev">
-    <div class="rev__top"><span class="rev__g"></span>google reviews</div>
+    <div class="rev__top">${GOOGLE_G}google reviews</div>
     <div class="rev__stars">★★★★★</div>
     <p class="rev__body">"${r.t}"</p>
     <div class="rev__more">click to read more →</div>
@@ -189,34 +213,16 @@ $('#reviewTrack').innerHTML = [...REVIEWS, ...REVIEWS].map(r => `
     </div>
   </article>`).join('');
 
-// -- work grid
-const CASES = [
-  { tag: 'commerce · headless', t: 'Meridian Retail', p: 'Full replatform to a headless stack with an SEO architecture built for both crawlers and answer engines.', k: [['+218%', 'organic revenue'], ['0.9s', 'LCP'], ['9 mo', 'engagement']], wide: true, a: 21 },
-  { tag: 'ai agents', t: 'Sable Health', p: 'A triage agent that answers intake questions and escalates the ones that matter.', k: [['71%', 'deflection'], ['24/7', 'coverage']], a: 4 },
-  { tag: 'platform · iot', t: 'Atlas Logistics', p: 'Fleet telemetry pipeline ingesting forty thousand events a minute into live dashboards.', k: [['40k', 'events/min'], ['99.98%', 'uptime']], a: 15 },
-  { tag: 'mobile · offline-first', t: 'Fieldnote', p: 'Field-ops app that keeps working in dead zones and reconciles the moment signal returns.', k: [['0', 'lost records'], ['4.8★', 'store rating']], a: 3 },
-  { tag: 'ai · retrieval', t: 'Verso Legal', p: 'Retrieval over two million documents with citations lawyers will actually stake their name on.', k: [['2M', 'documents'], ['1.2s', 'median query']], a: 18 }
-];
-$('#workGrid').innerHTML = CASES.map(c => `
-  <article class="case ${c.wide ? 'case--wide' : ''}" data-cursor="view">
-    <span class="case__art" style="background:${artFor(c.a)};filter:saturate(.8) brightness(.7)"></span>
-    <span class="case__veil"></span>
-    <span class="case__tag">${c.tag}</span>
-    <h3>${c.t}</h3>
-    <p>${c.p}</p>
-    <div class="case__kpi">${c.k.map(([b, s]) => `<div><b>${b}</b><span>${s}</span></div>`).join('')}</div>
-  </article>`).join('');
 
-// -- footer social (scramble on reveal)
-const SOCIAL = [
-  ['linkedin', 'M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21H9z', '#0a66c2'],
-  ['github', 'M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02a9.5 9.5 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0012 2z', '#e6edf3'],
-  ['behance', 'M8.2 6.5c1.9 0 3.2.9 3.2 2.8 0 1-.5 1.8-1.4 2.2 1.3.4 2 1.4 2 2.8 0 2.2-1.8 3.2-3.9 3.2H2V6.5zM5 10.6h2.6c.9 0 1.4-.4 1.4-1.2S8.5 8.3 7.6 8.3H5zm0 5.2h2.9c1 0 1.6-.5 1.6-1.4s-.6-1.4-1.6-1.4H5zM15 6.9h5.5v1.4H15zM22 14.4c0-2.6-1.5-4.5-4.1-4.5-2.5 0-4.2 1.9-4.2 4.4 0 2.6 1.6 4.4 4.2 4.4 2 0 3.5-1 4-2.8h-2.3c-.2.6-.8 1-1.6 1-1.1 0-1.8-.7-1.9-1.8h5.9zm-5.9-1.3c.2-1 .8-1.6 1.8-1.6s1.7.6 1.8 1.6z', '#1769ff'],
-  ['instagram', 'M12 2.2c3.2 0 3.6 0 4.9.07 1.2.06 1.8.25 2.2.42.56.22.96.48 1.38.9s.68.82.9 1.38c.17.4.36 1 .42 2.2.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.06 1.2-.25 1.8-.42 2.2a3.8 3.8 0 01-.9 1.38c-.42.42-.82.68-1.38.9-.4.17-1 .36-2.2.42-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.06-1.8-.25-2.2-.42a3.8 3.8 0 01-1.38-.9 3.8 3.8 0 01-.9-1.38c-.17-.4-.36-1-.42-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.06-1.2.25-1.8.42-2.2.22-.56.48-.96.9-1.38s.82-.68 1.38-.9c.4-.17 1-.36 2.2-.42C8.4 2.2 8.8 2.2 12 2.2zm0 3.24A6.56 6.56 0 1018.56 12 6.56 6.56 0 0012 5.44zm0 10.82A4.26 4.26 0 1116.26 12 4.26 4.26 0 0112 16.26zm8.35-11.08a1.53 1.53 0 11-1.53-1.53 1.53 1.53 0 011.53 1.53z', '#e1306c']
-];
-$('#footSocial').innerHTML = SOCIAL.map(([n, d, c]) =>
-  `<a class="fsoc" href="#"><svg viewBox="0 0 24 24" fill="${c}"><path d="${d}"/></svg><span data-scramble-late>${n}</span></a>`
-).join('');
+
+// -- footer social (labels decode on reveal)
+const SOCIAL_LINKS = { linkedin: CONTACT.linkedin, github: CONTACT.github };
+if ($('#footSocial')) $('#footSocial').innerHTML = (window.ICONS ? window.ICONS.social : [])
+  .filter(([name]) => SOCIAL_LINKS[name])
+  .map(([name, slug, color]) =>
+    `<a class="fsoc" href="${SOCIAL_LINKS[name]}" target="_blank" rel="noopener noreferrer">
+       ${window.ICONS.svg(slug, color, 15)}<span data-scramble-late>${name}</span></a>`)
+  .join('');
 
 // -- search index
 const INDEX = [
@@ -227,6 +233,7 @@ const INDEX = [
 ];
 const results = $('#searchResults');
 function renderSearch(q = '') {
+  if (!results) return;
   const list = INDEX.filter(([t]) => t.toLowerCase().includes(q.toLowerCase())).slice(0, 7);
   results.innerHTML = list.length
     ? list.map(([t, k]) => `<a href="#"><span>${t}</span><em>${k}</em></a>`).join('')
@@ -259,6 +266,7 @@ function finishIntro() {
 
 function runIntro() {
   const intro = $('#intro'), count = $('#introCount'), bar = $('#introBar');
+  if (!intro) { finishIntro(); return; }
   if (REDUCED || introAlreadySeen()) { finishIntro(); return; }
 
   document.body.classList.add('locked');
@@ -284,6 +292,8 @@ function runIntro() {
 }
 
 function afterIntro() {
+  gsap.from('.nav__pill', { y: -70, opacity: 0, duration: 1, delay: .15, ease: 'expo.out' });
+  if (!$('.hero__title')) { ScrollTrigger.refresh(); return; }   // subpage: nothing else to stage
   // hero title char reveal
   const chars = [];
   $$('.hero__title [data-split]').forEach(w => chars.push(...splitChars(w)));
@@ -292,34 +302,13 @@ function afterIntro() {
   gsap.to('.hero__sub', { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1, delay: .45, ease: 'power3.out' });
   gsap.from('.hero__actions .btn', { y: 24, opacity: 0, duration: .8, stagger: .08, delay: .62, ease: 'power3.out' });
   gsap.from('.hero__status', { opacity: 0, y: -10, duration: .9, delay: .8, ease: 'power2.out' });
-  gsap.from('.nav__pill', { y: -70, opacity: 0, duration: 1, delay: .15, ease: 'expo.out' });
-  setTimeout(() => $('#lang').classList.add('is-peek'), 2200);
-  setTimeout(() => $('#lang').classList.remove('is-peek'), 6000);
   ScrollTrigger.refresh();
 }
 
 /* ============================================================
-   6 · CURSOR + MAGNETIC
+   6 · MAGNETIC BUTTONS
    ============================================================ */
 if (!isTouch) {
-  const cur = $('#cursor'), dot = $('.cursor__dot'), ring = $('.cursor__ring'), lab = $('.cursor__label');
-  let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-  (function loop() {
-    rx = lerp(rx, mx, .16); ry = lerp(ry, my, .16);
-    dot.style.transform = `translate(${mx}px,${my}px) translate(-50%,-50%)`;
-    ring.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
-    lab.style.transform = `translate(${rx}px,${ry}px) translate(-50%,-50%)`;
-    requestAnimationFrame(loop);
-  })();
-  $$('a,button,[data-cursor],.rev,.case').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cur.classList.add('is-active');
-      lab.textContent = el.dataset.cursor || '';
-    });
-    el.addEventListener('mouseleave', () => { cur.classList.remove('is-active'); lab.textContent = ''; });
-  });
-
   // magnetic buttons
   $$('[data-magnetic]').forEach(el => {
     const strength = 0.32;
@@ -368,11 +357,8 @@ $$('.nav__item').forEach(item => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAllMenus(); closeSearch(); } });
 
-// scramble nav labels on hover
-$$('[data-scramble]').forEach(el => {
-  const parent = el.closest('a,button') || el;
-  parent.addEventListener('mouseenter', () => scramble(el));
-});
+// Buttons and nav links get the colour wipe only — no text scrambling on
+// hover, which read as glitching mid-interaction.
 
 // compact nav on scroll
 ScrollTrigger.create({
@@ -384,11 +370,15 @@ ScrollTrigger.create({
    8 · SEARCH
    ============================================================ */
 const searchEl = $('#search'), searchInput = $('#searchInput');
-function openSearch() { searchEl.classList.add('is-open'); setTimeout(() => searchInput.focus(), 80); }
-function closeSearch() { searchEl.classList.remove('is-open'); searchInput.blur(); }
-$('#searchBtn').addEventListener('click', openSearch);
-searchEl.addEventListener('click', e => { if (e.target === searchEl) closeSearch(); });
-searchInput.addEventListener('input', e => renderSearch(e.target.value));
+const hasSearch = !!(searchEl && searchInput);
+function openSearch() { if (!hasSearch) return; searchEl.classList.add('is-open'); setTimeout(() => searchInput.focus(), 80); }
+function closeSearch() { if (!hasSearch) return; searchEl.classList.remove('is-open'); searchInput.blur(); }
+if (hasSearch) {
+  const sb = $('#searchBtn');
+  if (sb) sb.addEventListener('click', openSearch);
+  searchEl.addEventListener('click', e => { if (e.target === searchEl) closeSearch(); });
+  searchInput.addEventListener('input', e => renderSearch(e.target.value));
+}
 document.addEventListener('keydown', e => {
   if (e.key === '/' && !/input|textarea/i.test(e.target.tagName)) { e.preventDefault(); openSearch(); }
 });
@@ -398,6 +388,7 @@ document.addEventListener('keydown', e => {
    ============================================================ */
 function buildGlobe() {
   const canvas = $('#globe');
+  if (!canvas) return null;
   if (!window.THREE || REDUCED) { canvas.style.display = 'none'; return null; }
 
   // --- simplified continent outlines [lon, lat]
@@ -602,7 +593,7 @@ const globeState = buildGlobe();
    10 · HERO SCROLL
    ============================================================ */
 // globe parallaxes up + dissolves across the first viewport of scroll
-gsap.timeline({
+if ($('.hero')) gsap.timeline({
   scrollTrigger: { trigger: '.hero', start: 'top top', end: '+=' + window.innerHeight, scrub: 1 }
 })
   .to('.hero__globe', { yPercent: -16, opacity: .18, ease: 'none' }, 0)
@@ -623,7 +614,7 @@ if (globeState) {
    11 · SCROLL RAIL
    ============================================================ */
 const railFill = $('#railFill'), railPct = $('#railPct');
-ScrollTrigger.create({
+if (railFill && railPct) ScrollTrigger.create({
   start: 0, end: 'max',
   onUpdate: s => {
     const p = Math.round(s.progress * 100);
@@ -674,6 +665,7 @@ $$('[data-count]').forEach(el => {
    ============================================================ */
 (() => {
   const track = $('#reviewTrack');
+  if (!track) return;
   const half = () => track.scrollWidth / 2;
   let x = 0, drag = false, startX = 0, startPos = 0, vel = 0, auto = 0.42;
   const apply = () => { track.style.transform = `translate3d(${x}px,0,0)`; };
@@ -713,6 +705,7 @@ $$('[data-count]').forEach(el => {
    ============================================================ */
 (() => {
   const rail = $('#methodRail');
+  if (!rail) return;
   const panels = $$('.phase', rail);
   const nodes = $$('.tracker__node');
   const labels = $$('.tracker__labels em');
@@ -779,6 +772,7 @@ $$('.ink, .inkband').forEach(win => {
    ============================================================ */
 (() => {
   const host = $('#arc');
+  if (!host) return;
   const txt = 'TECHNOLOGY DOESN’T HAVE TO BE THE MOST SOPHISTICATED — IT HAS TO BE THE MOST USEFUL · ';
   host.innerHTML = `
     <svg viewBox="0 0 600 600">
@@ -808,13 +802,13 @@ $$('[data-reveal]').forEach(el => {
 });
 
 // headline char reveals (outside hero)
-$$('.friction__h [data-split], .deserve__h [data-split]').forEach(w => {
+$$('.friction__h [data-split], .deserve__h [data-split], .page__h [data-split]').forEach(w => {
   const chars = splitChars(w);
   gsap.set(chars, { yPercent: 110, opacity: 0, filter: 'blur(10px)' });
   gsap.to(chars, {
     yPercent: 0, opacity: 1, filter: 'blur(0px)',
     duration: 1.1, stagger: .022, ease: 'expo.out',
-    scrollTrigger: { trigger: w.closest('h2'), start: 'top 82%', once: true }
+    scrollTrigger: { trigger: w.closest('h1,h2'), start: 'top 82%', once: true }
   });
 });
 
@@ -915,15 +909,56 @@ $$('.foot__col').forEach((el, i) => {
   })();
 })();
 
+
 /* ============================================================
-   19 · LANG TOGGLE (demo)
+   19 · CONTACT WIRING
    ============================================================ */
-$('#lang').addEventListener('click', () => {
-  const t = $('.lang__text');
-  const ur = t.textContent.includes('اردو');
-  t.innerHTML = `<i></i>${ur ? 'English?' : 'اردو میں؟'}`;
-  $('.lang__flag').textContent = ur ? 'EN' : 'PK';
+// WhatsApp CTA -> wa.me, or the contact page while no number is set
+$$('.nav__cta').forEach(a => {
+  a.href = WHATSAPP;
+  if (WHATSAPP.startsWith('http')) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
 });
+$$('[data-mailto]').forEach(a => { a.href = MAILTO; });
+
+/* The form has no backend, so it hands off to the visitor's mail client with
+   everything already filled in. Swap the handler for a fetch() to Formspree /
+   Getform / your own endpoint when you want submissions to land server-side. */
+(() => {
+  const form = $('#cform');
+  if (!form) return;
+  const msg = $('#cformMsg', form) || $('#cformMsg');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const name = (data.get('name') || '').toString().trim();
+    const email = (data.get('email') || '').toString().trim();
+    const body = (data.get('message') || '').toString().trim();
+
+    if (!name || !email || !body) {
+      msg.textContent = 'Please fill in all three fields.';
+      msg.className = 'cform__msg is-err';
+      return;
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      msg.textContent = 'That email address looks incomplete.';
+      msg.className = 'cform__msg is-err';
+      return;
+    }
+
+    const subject = `Project enquiry from ${name}`;
+    const lines = `${body}
+
+—
+${name}
+${email}`;
+    window.location.href =
+      `${MAILTO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines)}`;
+
+    msg.textContent = 'Opening your mail app with the message ready to send.';
+    msg.className = 'cform__msg is-ok';
+  });
+})();
 
 /* ============================================================
    BOOT
